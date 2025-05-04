@@ -1,0 +1,21 @@
+services:
+  movie-service:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/movieservice
+
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - movie-data:/data/db
+
+volumes:
+  movie-data:
