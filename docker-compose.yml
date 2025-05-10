@@ -6,16 +6,29 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - mongo
+      - movie-mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017/movieservice
+      - MONGO_URL=mongodb://movie-mongo:27017/movieservice
+      - PORT=3001
+      - JWT_SECRET=B7dx9M#p2s%Lq8j5ZGc!K3vF6tY4wRnE
+      - USER_SERVICE_URL=http://user-service:3000
+      - REVIEW_SERVICE_URL=http://review-service:3003
+      - WATCH_SERVICE_URL=http://watch-service:3004
+    hostname: movie-service
+    networks:
+      - app-network
 
-  mongo:
+  movie-mongo:
     image: mongo
     ports:
       - "27018:27017"
     volumes:
       - movie-data:/data/db
+    networks:
+      - app-network
 
 volumes:
   movie-data:
+networks:
+  app-network:
+    external: true
